@@ -1,5 +1,6 @@
 [bot]
 TOKEN = ""
+skip_updates = ""
 
 [redis]
 ip = ""
