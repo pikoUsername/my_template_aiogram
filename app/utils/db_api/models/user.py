@@ -1,4 +1,5 @@
 import asyncpg
+from aiogram.types import User
 
 from .._conn.postgres import PostgresConnection
 
@@ -16,12 +17,12 @@ class UserModel(PostgresConnection):
         return user
 
     @staticmethod
-    async def create(user_id: int, name: str):
+    async def create(user: User):
         sql = (
             f"INSERT INTO users(user_id, first_name)",
             "VALUES ($1, $2) RETURNING *;"
         )
-        param = (user_id, name)
+        param = (user.id, user.last_name)
         result = await UserModel._make_request(
             "".join(sql), param)
         return result

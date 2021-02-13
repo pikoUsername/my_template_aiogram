@@ -30,4 +30,3 @@ def setup(lgp: Path, ignore: List[str] = None):
     logging.basicConfig(handlers=[InterceptHandler()], level=logging.INFO)
     for i in ignore:
         logger.disable(i)
-    logger.disable("sqlalchemy.engine.base")

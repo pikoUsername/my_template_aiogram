@@ -1,5 +1,4 @@
 if __name__ == '__main__':
-    from .loader import e, config
+    from app.utils.misc import executor
 
-    e.skip_updates = config['bot']['skip_updates']
-    e.start_polling()
+    executor.runner.start_polling()
