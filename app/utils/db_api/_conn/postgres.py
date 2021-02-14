@@ -4,6 +4,7 @@ from typing import Union, List, TypeVar, Type, Optional
 
 import asyncpg
 from aiogram import Bot
+from loguru import logger
 
 from .base import RawConnection
 
@@ -65,4 +66,5 @@ class PostgresConnection(RawConnection):
         return [] if mult else None
 
     def __del__(self):
+        logger.info("Closing Postgres Connection...")
         self.loop.run_until_complete(self.pool.close())

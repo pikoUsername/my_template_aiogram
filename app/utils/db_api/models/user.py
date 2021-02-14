@@ -7,8 +7,6 @@ from .._conn.postgres import PostgresConnection
 
 
 class UserModel(PostgresConnection):
-    __slots__ = ()
-
     @staticmethod
     async def get(id: int) -> asyncpg.Record:
         user = await UserModel._make_request(
@@ -24,7 +22,7 @@ class UserModel(PostgresConnection):
             "INSERT INTO users(user_id, first_name, conversation)",
             "VALUES ($1, $2, true) RETURNING *;"
         )
-        param = (user.id, user.last_name)
+        param = (user.id, user.first_name)
         result = await UserModel._make_request(
             "".join(sql), param)
         return result

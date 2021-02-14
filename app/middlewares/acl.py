@@ -1,8 +1,7 @@
 from aiogram import types
 from aiogram.dispatcher.middlewares import BaseMiddleware
 
-from app.utils.db_api.models import UserModel
-from app.utils.db_api.models.chat import Chat
+from app.utils.db_api.models import UserModel, Chat
 
 
 class Acl(BaseMiddleware):
