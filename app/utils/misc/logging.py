@@ -28,5 +28,6 @@ def setup(lgp: Path, ignore: List[str] = None):
     logger.add(sys.stderr, format="{time} {level} {message}", filter="my_module", level="INFO")
     logger.add(lgp / "file_{time}.log")
     logging.basicConfig(handlers=[InterceptHandler()], level=logging.INFO)
-    for i in ignore:
-        logger.disable(i)
+    if ignore:
+        for i in ignore:
+            logger.disable(i)

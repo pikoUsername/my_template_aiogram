@@ -1,12 +1,12 @@
 from aiogram import types
-from aiogram.dispatcher.filters.builtin import CommandHelp, ChatType
+from aiogram.dispatcher.filters.builtin import CommandHelp
 
 from app.loader import dp
 from app.utils.misc.throttling import rate_limit
 
 
 @rate_limit(5, 'help')
-@dp.message_handler(CommandHelp(), ChatType.PRIVATE)
+@dp.message_handler(CommandHelp())
 async def bot_help(message: types.Message):
     text = [
         'Список команд: ',

@@ -21,7 +21,9 @@ def setup():
     from app import filters
     from app import middlewares
     from app.utils.misc import executor
+    from app.utils.misc import logging
 
+    logging.setup(proj_path)
     middlewares.setup(dp)
     filters.setup(dp)
     executor.setup()
