@@ -1,16 +1,14 @@
 from aiogram import types
 from aiogram.dispatcher.filters.builtin import CommandHelp
 
-from app.loader import dp
-from app.utils.misc.throttling import rate_limit
+from app.loader import dp, i18n
+
+_ = i18n.gettext
 
 
-@rate_limit(5, 'help')
 @dp.message_handler(CommandHelp())
 async def bot_help(message: types.Message):
-    text = [
-        'Список команд: ',
-        '/start - Начать диалог',
-        '/help - Получить справку'
-    ]
-    await message.answer('\n'.join(text))
+    text = _('Список команд: \n'
+           '/start - Начать диалог\n'
+           '/help - Получить справку\n')
+    await message.answer(text)

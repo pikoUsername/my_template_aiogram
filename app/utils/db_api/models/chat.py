@@ -7,7 +7,7 @@ class Chat(PostgresConnection):
     async def get(cid: int):
         c = await Chat._make_request(
             "SELECT * FROM users WHERE user_id = $1;",
-            tuple(cid),
+            (cid,),
             fetch=True
         )
         return c

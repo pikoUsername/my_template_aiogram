@@ -13,3 +13,17 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.8.0\n"
 
+#: app/handlers/users/start.py:11
+msgid "Привет, {}!"
+msgstr "Hello, {}!"
+
+#: app/handlers/users/help.py:11
+msgid ""
+"Список команд: \n"
+"/start - Начать диалог\n"
+"/help - Получить справку\n"
+msgstr ""
+"List of commands: \n"
+"/start - start conversation\n"
+"/help - Get help\n"
+

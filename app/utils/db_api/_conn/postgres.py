@@ -1,3 +1,4 @@
+import asyncio
 import logging
 from typing import Union, List, TypeVar, Type, Optional
 
@@ -14,6 +15,7 @@ T = TypeVar("T")
 class PostgresConnection(RawConnection):
     pool: asyncpg.pool.Pool = None
     logger = logging.getLogger('bot')
+    loop = asyncio.get_event_loop()
 
     @staticmethod
     async def __make_request(
@@ -22,20 +24,19 @@ class PostgresConnection(RawConnection):
             fetch: bool = False,
             mult: bool = False,
     ):
-        if not PostgresConnection.conn:
+        if not PostgresConnection.pool:
             bot = Bot.get_current()
-            PostgresConnection.conn = await asyncpg.create_pool(
-                **bot['config']['db']
+            PostgresConnection.pool = await asyncpg.create_pool(
+                **bot['config']['database']
             )
 
-        async with PostgresConnection.conn.transaction():
-            conn = PostgresConnection.conn
-            if fetch:
-                result = await conn.fetch(sql, *params)
-                return result
-            else:
-                await conn.execute(sql, *params)
-        await PostgresConnection.conn.close()
+        async with PostgresConnection.pool.acquire() as conn:
+            async with conn.transaction():
+                if fetch:
+                    result = await conn.fetch(sql, *params)
+                    return result
+                else:
+                    await conn.execute(sql, *params)
 
     @staticmethod
     def _convert_to_model(data: Optional[dict], model: Type[T]) -> Optional[T]:
@@ -62,3 +63,6 @@ class PostgresConnection(RawConnection):
                 else:
                     return raw
         return [] if mult else None
+
+    def __del__(self):
+        self.loop.run_until_complete(self.pool.close())

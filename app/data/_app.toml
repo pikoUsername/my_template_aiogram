@@ -1,0 +1,14 @@
+[bot]
+TOKEN = ""
+skip_updates = true
+
+[redis]
+ip = ""
+name = ""
+
+[database]
+database = ""
+user = ""
+host = "127.0.0.1"
+port = 5432
+password = ""
