@@ -16,7 +16,7 @@ storage = MemoryStorage()
 bot = Bot(config['bot']['TOKEN'], parse_mode=ParseMode.HTML)
 bot['config'] = config
 dp = Dispatcher(bot, storage=storage)
-i18n = I18nMiddleware("bot", locales_dir, default="ru")
+i18n = I18nMiddleware("bot", locales_dir, default="en")
 
 
 def setup():

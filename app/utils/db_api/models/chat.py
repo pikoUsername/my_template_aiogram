@@ -2,6 +2,7 @@ from aiogram import types
 
 from .._conn.postgres import PostgresConnection
 
+
 class Chat(PostgresConnection):
     @staticmethod
     async def get(cid: int):

@@ -9,6 +9,8 @@ from aiogram import types
 from app.loader import dp, bot
 from app.utils.db_api.models.user import UserModel
 
+__all__ = ("setup", "runner")
+
 runner = Executor(dp)
 
 

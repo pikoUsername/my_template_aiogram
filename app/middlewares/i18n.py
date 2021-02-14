@@ -24,5 +24,5 @@ class I18nMiddleware(BaseI18nMiddleware):
     async def get_user_locale(self, action: str, args: Tuple[Any]) -> str:
         data: dict = args[-1]
         if "chat" in data:
-            return data["chat"].language or self.default
+            return data["chat"].user_lang or self.default
         return self.default

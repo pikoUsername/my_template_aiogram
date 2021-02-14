@@ -8,7 +8,7 @@ from loguru import logger
 
 from .base import RawConnection
 
-__all__ = ("PostgresConnection")
+__all__ = ("PostgresConnection",)
 
 T = TypeVar("T")
 

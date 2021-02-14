@@ -5,6 +5,7 @@ from aiogram import Dispatcher
 
 __all__ = ("Paginator",)
 
+
 class InvalidPage(Exception):
     pass
 
@@ -55,7 +56,6 @@ class Paginator:
 
     @property
     def num_pages(self):
-        """Return the total number of pages."""
         return len(self.page_list)
 
     def has_next(self):

@@ -5,6 +5,8 @@ from pathlib import Path
 
 from loguru import logger
 
+__all__ = ("setup",)
+
 
 class InterceptHandler(logging.Handler):
     LEVELS_MAP = {

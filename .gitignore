@@ -5,6 +5,8 @@ __pycache__/
 
 # C extensions
 *.so
+locales/en/LC_MESSAGES/mybot.mo
+locales/ru/LC_MESSAGES/mybot.mo
 
 # Distribution / packaging
 .Python
