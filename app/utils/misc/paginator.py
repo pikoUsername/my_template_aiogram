@@ -1,6 +1,11 @@
 from typing import Union, List, Any
 
-from aiogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton, CallbackQuery
+from aiogram.types import (
+    Message,
+    InlineKeyboardMarkup,
+    InlineKeyboardButton,
+    CallbackQuery
+)
 from aiogram import Dispatcher
 
 __all__ = ("Paginator",)
@@ -21,7 +26,8 @@ _DEFAULT_KB = InlineKeyboardMarkup(inline_keyboard=[
 
 
 class Paginator:
-    __slots__ = ("page_list", "per_page", "current_page", "message", "kb", "dp")
+    __slots__ = ("page_list", "per_page", "current_page",
+                 "message", "kb", "dp")
 
     def __init__(self, object_list: list, per_page: int = 5,
                  message: Message = None, kb=None, dp=None):
@@ -77,7 +83,8 @@ class Paginator:
         if self.message and m is None:
             raise TypeError("Message and arguemnt 'm' is None")
 
-        self.dp.register_callback_query_handler(self.page_kb_handler, state="*")
+        self.dp.register_callback_query_handler(
+            self.page_kb_handler, state="*")
         await self.show_page(self.current_page)
 
     async def show_page(self, page: int):

@@ -1,3 +1,4 @@
 [flake8]
 ignore=E508
-exclude=.git,__pycache__,locales,.idea
+exclude=.git,__pycache__,locales,.idea'
+max_line_length=120
