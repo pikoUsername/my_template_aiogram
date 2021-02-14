@@ -28,6 +28,6 @@ class UserModel(PostgresConnection):
         return result
 
     @staticmethod
-    async def get_admins() -> List[asyncpg.Record]:
-        sql = "SELECT * FROM users WHERE is_admin = true;"
-        return await UserModel._make_request(sql, fetch=True)
+    async def get_admins():
+        sql = "SELECT u.* FROM users u WHERE u.is_admin = $1;"
+        return await UserModel._make_request(sql, (True,))
