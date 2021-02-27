@@ -9,6 +9,5 @@ from .throttling import ThrottlingMiddleware
 def setup(dp: Dispatcher):
     logger.info("Setuping Middlewares...")
 
-    dp.middleware.setup(ThrottlingMiddleware())
+    dp.middleware.setup(ThrottlingMiddleware(.4))
     dp.middleware.setup(Acl())
-    dp.middleware.setup(ThrottlingMiddleware())
