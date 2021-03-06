@@ -13,12 +13,18 @@ and, yes it task for todo
 from aiogram import Dispatcher
 
 
-class Debuger:
-    __slots__ = "dp", 'logs_path'
+class Debugger:
+    __slots__ = "dp", 'logs_path', "_configured"
 
-    def __init__(self, dp: Dispatcher):
+    def __init__(self, dp: Dispatcher, logs_fp=None):
         self.dp = dp
-        self.logs_path = None
+        self.logs_path = logs_fp or None
+        self._configured = 0  # type: bool
+
+    configured = property(lambda self: self._configured)
+
+    def sort_files(self, files):
+        pass
 
     async def read_log(self, fp, filter_):
         """
@@ -38,5 +44,9 @@ class Debuger:
         finally:
             f.close()
 
-    async def read_logs(self, last=0):
+    async def read_logs(self, last=0):  # last attr type: bool
         pass
+
+    def setup(self):
+        if not self.configured:
+            self.dp.register_message_handler()
