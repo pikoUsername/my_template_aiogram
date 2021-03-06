@@ -2,21 +2,19 @@ from __future__ import annotations
 
 from typing import List, TypeVar, Type, Union, Any
 
-__all__ = "Embed", "Field"
-
 from aiogram.types import (
     InlineKeyboardMarkup,
     InlineKeyboardButton,
 )
-from aiogram.utils.callback_data import CallbackData
 
 from app.utils.misc.html import strong
+
+__all__ = "Embed", "Field"
 
 T = TypeVar("T")  # slut type
 
 
-class InvalidPage(Exception):
-    pass
+class InvalidPage(Exception): pass
 
 
 _DEFAULT_KB = InlineKeyboardMarkup(inline_keyboard=[
@@ -26,15 +24,14 @@ _DEFAULT_KB = InlineKeyboardMarkup(inline_keyboard=[
     ]
 ], row_width=4)
 
-pagination_call = CallbackData("paginator", "key", "page")
-
 
 class Embed:
-    __slots__ = "_title", "value", "fields", "_fields_len"
     """
-    Embed like discord, but more worse,
+    Embed like discord embed, but more worse,
     maybe added pagination, for embed
     """
+    __slots__ = "_title", "value", "fields", "_fields_len"
+
     def __init__(self, title: str, value=tuple()):
         if not isinstance(value, list):
             value = "".join(value)
@@ -175,6 +172,4 @@ class Field:
 
         return a
 
-    __str__ = get_embed
-    __repr__ = get_embed
-
+    __str__ = __repr__ = get_embed

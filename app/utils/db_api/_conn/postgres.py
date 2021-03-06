@@ -1,4 +1,3 @@
-import asyncio
 import logging
 from typing import Union, List, TypeVar, Type, Optional
 
@@ -8,15 +7,14 @@ from loguru import logger
 
 from .base import RawConnection
 
-__all__ = ("PostgresConnection",)
+__all__ = "PostgresConnection",
 
 T = TypeVar("T")
 
 
 class PostgresConnection(RawConnection):
     pool: asyncpg.pool.Pool = None
-    logger = logging.getLogger('bot')
-    loop = asyncio.get_event_loop()
+    logger = logging.getLogger(__name__)
 
     @staticmethod
     async def __make_request(

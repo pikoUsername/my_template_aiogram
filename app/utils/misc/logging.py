@@ -5,7 +5,7 @@ from pathlib import Path
 
 from loguru import logger
 
-__all__ = ("setup",)
+__all__ = "setup",
 
 
 class InterceptHandler(logging.Handler):

@@ -1,9 +1,9 @@
-from typing import List
-
 import asyncpg
 from aiogram.types import User
 
 from .._conn.postgres import PostgresConnection
+
+__all__ = "UserModel",
 
 
 class UserModel(PostgresConnection):

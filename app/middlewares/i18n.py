@@ -16,6 +16,8 @@ class LanguageData:
 
 
 class I18nMiddleware(BaseI18nMiddleware):
+    __slots__ = ()
+
     AVAILABLE_LANGUAGES = {
         "en": LanguageData("🇺🇸", "English"),
         "ru": LanguageData("🇷🇺", "Русский"),

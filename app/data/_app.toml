@@ -1,6 +1,7 @@
 [bot]
 TOKEN = ""
 skip_updates = true
+notfiy_owners = false
 
 [redis]
 ip = ""

@@ -5,6 +5,12 @@ from app.utils.db_api.models import UserModel, Chat
 
 
 class Acl(BaseMiddleware):
+    """
+    Creating a User and Chat
+    """
+    # a bit memory saving
+    __slots__ = ()
+
     @staticmethod
     async def setup_chat(u: types.User, c: types.Chat, data: dict):
         chat_id = c.id if c else u.id

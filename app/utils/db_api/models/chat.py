@@ -2,6 +2,8 @@ from aiogram import types
 
 from .._conn.postgres import PostgresConnection
 
+__all__ = "Chat"
+
 
 class Chat(PostgresConnection):
     @staticmethod

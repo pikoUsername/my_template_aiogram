@@ -5,3 +5,4 @@ asyncpg==0.21.0
 pytoml
 loguru
 pytest
+flake8

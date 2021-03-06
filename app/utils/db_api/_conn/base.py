@@ -1,26 +1,33 @@
 from typing import List, Type, TypeVar, Union
 
-__all__ = ("RawConnection",)
+__all__ = "RawConnection",
 
 T = TypeVar("T")
 
 
 class RawConnection:
+    """
+    Base class for database connections
+    """
+
+    # a bit memory saving
+    __slots__ = ()
+
     @staticmethod
     async def __make_request(
-            sql: str,
-            params: Union[tuple, List[tuple]] = None,
-            fetch: bool = False,
-            mult: bool = False
+        sql: str,
+        params: Union[tuple, List[tuple]] = None,
+        fetch: bool = False,
+        mult: bool = False
     ):
         raise NotImplementedError
 
     @staticmethod
     async def _make_request(
-            sql: str,
-            params: Union[tuple, List[tuple]] = None,
-            fetch: bool = False,
-            mult: bool = False,
-            model_type: Type[T] = None
+        sql: str,
+        params: Union[tuple, List[tuple]] = None,
+        fetch: bool = False,
+        mult: bool = False,
+        model_type: Type[T] = None
     ):
         raise NotImplementedError
