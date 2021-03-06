@@ -1,7 +1,7 @@
 """
 bot starter
 """
-# __main__ name means, it s program entry point
+# __main__ name means, program entry point
 if __name__ == '__main__':
     from app.utils.misc import executor
     from . import loader

@@ -6,6 +6,8 @@ __all__ = "Chat"
 
 
 class Chat(PostgresConnection):
+    __slots__ = ()
+
     @staticmethod
     async def get(cid: int):
         c = await Chat._make_request(
