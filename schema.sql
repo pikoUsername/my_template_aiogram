@@ -11,4 +11,6 @@ CREATE TABLE chats(
     chat_id BIGINT,
     title VARCHAR(255),
     type VARCHAR(20),
+    is_admin_chat BOOLEAN DEFAULT false,
+    notify_errors BOOLEAN DEFAULT false,
     user_lang VARCHAR(6) DEFAULT 'ru');

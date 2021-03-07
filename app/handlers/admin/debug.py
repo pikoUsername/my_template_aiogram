@@ -11,8 +11,14 @@ Have a functionaliti:
 and, yes it task for todo
 """
 from pathlib import Path
+from typing import Any
 
 from aiogram import Dispatcher, types
+
+try:
+    from app.utils.db_api.models import Chat
+except ImportError:
+    Chat = object()
 
 try:
     from app.utils.misc.embed import Embed
@@ -39,11 +45,12 @@ except (ImportError, ModuleNotFoundError):
 
 
 class Debugger:
-    __slots__ = "dp", 'logs_path', "_configured"
+    __slots__ = "dp", 'logs_path', "_configured", "_notify_errors"
 
     def __init__(self, dp: Dispatcher, logs_fp=None):
         self.dp = dp
         self.logs_path = logs_fp or None
+
         self._configured = False
 
     configured = property(lambda self: self._configured)
@@ -77,7 +84,7 @@ class Debugger:
 
         if last is False:
             # Magic
-            proj_path = Path(__name__).parent.parent / "logs"
+            proj_path = self.logs_path or Path(__name__).parent.parent / "logs"
 
             # saving filter result
             # and it s incredible,
@@ -93,10 +100,10 @@ class Debugger:
                 result.append(log)
             return result
 
-    async def get_logs(self, m: types.Message, *_):
+    async def get_logs(self, message: types.Message, *_):
         # get_args it s just a args after /command
         # split for split with using space
-        args = m.get_args().split()
+        args = message.get_args().split()
 
         # args is not None: exuavelent just args:
         # but it s looks cool
@@ -109,19 +116,36 @@ class Debugger:
                 filters = None
 
             result = await self.read_logs(last, filters)
-            return await m.answer("".join(str(v) for v in result))
+            return await message.answer("".join(str(v) for v in result))
 
-        await m.answer(__("Нету Логов..."))
+        await message.answer(__("Нету Логов..."))
+
+    if Chat:
+        async def notify_errors(self, message: types.Message, chat: Any):
+            sql = ""
+            await Chat._make_request()
+    else:
+        async def notify_errors(self, message: types.Message):
+            return await message.answer("No Chat model Found.")
+
+    def _reg(self, *args, **kwargs):
+        if 'is_admin' != kwargs:
+            kwargs['is_admin'] = True
+        self.dp.register_message_handler(*args, **kwargs)
 
     def setup(self):
         """
         Setup a all handlers in this class
         """
         if not self.configured:
-            self.dp.register_message_handler(self.get_logs, commands="show_logs")
+            self._reg(self.get_logs, commands="show_logs")
+            self._reg(self.notify_errors, commands="notify_errors")
 
     def unregister(self):
         """
         Unregisters from discpatcher handlers
         """
-        self.dp.message_handlers.unregister(self.get_logs)
+        _unreg = self.dp.message_handlers.unregister
+        _unreg(self.get_logs)
+        _unreg(self.notify_errors)
+
