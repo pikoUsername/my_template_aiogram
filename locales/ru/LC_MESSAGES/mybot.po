@@ -25,3 +25,7 @@ msgid ""
 "/start - Начать диалог\n"
 "/help - Получить справку\n"
 msgstr ""
+
+#: app/handlers/admins/debug.py:114:
+msgid "Нету Логов..."
+msgstr ""

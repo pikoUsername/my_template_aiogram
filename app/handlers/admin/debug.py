@@ -111,7 +111,7 @@ class Debugger:
             result = await self.read_logs(last, filters)
             return await m.answer("".join(str(v) for v in result))
 
-        await m.answer(__("Нету Логов"))
+        await m.answer(__("Нету Логов..."))
 
     def setup(self):
         """
