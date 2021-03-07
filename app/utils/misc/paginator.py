@@ -8,7 +8,7 @@ from aiogram.types import (
 )
 from aiogram import Dispatcher
 
-__all__ = ("Paginator",)
+__all__ = "Paginator",
 
 
 class InvalidPage(Exception): pass
