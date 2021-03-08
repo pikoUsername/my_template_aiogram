@@ -1,7 +1,10 @@
 import logging
 
 from app.loader import dp
+from app.utils.db_api.models import Chat
 
+
+log = logging.getLogger(__name__)
 
 @dp.errors_handler()
 async def errors_handler(update, exception):
@@ -17,39 +20,53 @@ async def errors_handler(update, exception):
                                           CantParseEntities, MessageCantBeDeleted)
 
     if isinstance(exception, CantDemoteChatCreator):
-        logging.debug("Can't demote chat creator")
+        log.debug("Can't demote chat creator")
         return True
 
     if isinstance(exception, MessageNotModified):
-        logging.debug('Message is not modified')
+        log.debug('Message is not modified')
         return True
+
     if isinstance(exception, MessageCantBeDeleted):
-        logging.debug('Message cant be deleted')
+        log.debug('Message cant be deleted')
         return True
 
     if isinstance(exception, MessageToDeleteNotFound):
-        logging.debug('Message to delete not found')
+        log.debug('Message to delete not found')
         return True
 
     if isinstance(exception, MessageTextIsEmpty):
-        logging.debug('MessageTextIsEmpty')
+        log.debug('MessageTextIsEmpty')
         return True
 
     if isinstance(exception, Unauthorized):
-        logging.info(f'Unauthorized: {exception}')
+        log.info(f'Unauthorized: {exception}')
         return True
 
     if isinstance(exception, InvalidQueryID):
-        logging.exception(f'InvalidQueryID: {exception} \nUpdate: {update}')
+        log.exception(f'InvalidQueryID: {exception} \nUpdate: {update}')
         return True
 
     if isinstance(exception, TelegramAPIError):
-        logging.exception(f'TelegramAPIError: {exception} \nUpdate: {update}')
+        log.exception(f'TelegramAPIError: {exception} \nUpdate: {update}')
         return True
     if isinstance(exception, RetryAfter):
-        logging.exception(f'RetryAfter: {exception} \nUpdate: {update}')
+        log.exception(f'RetryAfter: {exception} \nUpdate: {update}')
         return True
     if isinstance(exception, CantParseEntities):
-        logging.exception(f'CantParseEntities: {exception} \nUpdate: {update}')
+        log.exception(f'CantParseEntities: {exception} \nUpdate: {update}')
         return True
-    logging.exception(f'Update: {update} \n{exception}')
+    else:
+        from app.utils.misc import admin
+        # := is just syntax sugar
+        # it s equavelent to:
+        # >>> func = getattr(Chat, 'get_admin_chats', None)
+        # >>> if func:
+        # ...     # do something
+        # ...
+        if func := getattr(Chat, 'get_admin_chats', None):
+            chats = await func()
+            await admin.notify_error(chats, exception)
+
+    log.exception(f'Update: {update} \n{exception}')
+
