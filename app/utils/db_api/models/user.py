@@ -10,10 +10,10 @@ class UserModel(PostgresConnection):
     __slots__ = ()
 
     @staticmethod
-    async def get(id: int) -> asyncpg.Record:
+    async def get(uid: int) -> asyncpg.Record:
         sql = "SELECT * FROM users WHERE user_id = $1 LIMIT 1;"
         user = await UserModel._make_request(
-            sql, (id,), fetch=True)
+            sql, (uid,), fetch=True)
 
         return user
 
@@ -21,7 +21,7 @@ class UserModel(PostgresConnection):
     async def create(user: User):
         sql = (
             "INSERT INTO users(user_id, first_name, conversation)",
-            "VALUES ($1, $2, true) RETURNING *;"
+            "VALUES ($1, $2, true);"
         )
         param = user.id, user.first_name
         result = await UserModel._make_request(

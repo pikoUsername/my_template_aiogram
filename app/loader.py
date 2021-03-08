@@ -5,20 +5,33 @@ from aiogram.contrib.fsm_storage.memory import MemoryStorage
 from aiogram.types import ParseMode
 from loguru import logger
 
-from app.utils.misc.config import load_config
-from .middlewares.i18n import I18nMiddleware
+from app.utils.misc import config
+from app.middlewares.i18n import I18nMiddleware
 
+# its just syntax sugar
 __all__ = "setup", "dp", "bot", "config", "i18n", "proj_path", "locales_dir"
 
 
 # globals ####################################
 
+# directories
 proj_path = Path(__file__).parent.parent
 locales_dir = proj_path / "locales"
-config = load_config(proj_path / "app")
 
+# config load, as dict
+config = config.load_config(proj_path / "app")
+
+# storage for fsm, stuff
+# you must change it, bc default python dict
+# eats a lot of Memory, a lot of is literally
+# a lot, better use Mongo, or Redis
+# Redis, and Mongo are eat less memory and resources than python dict
 storage = MemoryStorage()
 bot = Bot(config['bot']['TOKEN'], parse_mode=ParseMode.HTML)
+
+# bot can store, any values
+# bc, Bot class is subclass of DataMixin
+# see DataMixin class for more info
 bot['config'] = config
 dp = Dispatcher(bot, storage=storage)
 i18n = I18nMiddleware("bot", locales_dir, default="en")
@@ -61,4 +74,6 @@ def setup():
     from app import handlers
     from app.handlers import admin
 
+    # admin debugger setup
+    # note debugger still in development
     admin.setup(dp, proj_path / "logs")
