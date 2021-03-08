@@ -58,4 +58,7 @@ def setup():
 
     logger.info("Configure handlers...")
     # noinspection PyUnresolvedReferences
-    import app.handlers
+    from app import handlers
+    from app.handlers import admin
+
+    admin.setup(dp, proj_path / "logs")
