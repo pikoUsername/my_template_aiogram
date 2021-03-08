@@ -20,7 +20,7 @@ async def notify_all_owner(_):
     if admins is not None:
         for admin in admins:
             with suppress(TelegramAPIError):
-                bot.send_message(admin.user_id, "Bot Started")
+                await bot.send_message(admin.user_id, "Bot Started")
         return
 
     logger.info("No Admins...")
