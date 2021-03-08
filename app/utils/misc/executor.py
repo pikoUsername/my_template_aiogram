@@ -35,5 +35,5 @@ async def setup_commands(_dp: Dispatcher):
 
 def setup():
     runner.on_startup(setup_commands)
-    if runner.dispatcher.bot['config']['bot']['notfiy_owners']:
+    if runner.dispatcher.bot['config']['bot']['notify_owners']:
         runner.on_startup(notify_all_owner)
