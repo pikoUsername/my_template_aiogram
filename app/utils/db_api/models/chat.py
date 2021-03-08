@@ -20,3 +20,9 @@ class Chat(PostgresConnection):
         sql = "INSERT INTO chats(chat_id, title, type) VALUES ($1, $2, $3) RETURNING *;"
         c = await Chat._make_request(sql, (chat.id, chat.title, chat.type))
         return c
+
+    @staticmethod
+    async def get_admin_chats():
+        sql = "SELECT c.* FROM chats AS c WHERE is_admin_chat = true AND notify_errors = true;"
+        result = await Chat._make_request(sql, fetch=True)
+        return result

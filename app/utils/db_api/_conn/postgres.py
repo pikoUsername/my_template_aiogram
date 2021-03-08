@@ -1,3 +1,4 @@
+import asyncio
 import logging
 from typing import Union, List, TypeVar, Type, Optional
 
@@ -30,6 +31,7 @@ class PostgresConnection(RawConnection):
             )
 
         async with PostgresConnection.pool.acquire() as conn:
+            conn: asyncpg.Connection
             async with conn.transaction():
                 if fetch:
                     result = await conn.fetch(sql, *params)
@@ -52,17 +54,21 @@ class PostgresConnection(RawConnection):
         raw = await PostgresConnection.__make_request(sql, params, fetch, mult)
         if raw:
             if mult:
-                if model_type:
-                    return [PostgresConnection._convert_to_model(i, model_type) for i in raw]
-                else:
+                if not model_type:
                     return [i for i in raw]
+                return [PostgresConnection._convert_to_model(i, model_type) for i in raw]
             else:
-                if model_type:
-                    return PostgresConnection._convert_to_model(raw, model_type)
-                else:
+                if not model_type:
                     return raw
+                return PostgresConnection._convert_to_model(raw, model_type)
+
         return [] if mult else None
+
+    def close(self):
+        loop = asyncio.get_event_loop()
+        loop.run_until_complete(self.pool.close())
+        del loop
 
     def __del__(self):
         logger.info("Closing Postgres Connection...")
-        self.loop.run_until_complete(self.pool.close())
+        self.close()
