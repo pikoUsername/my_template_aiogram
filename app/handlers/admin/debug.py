@@ -10,15 +10,16 @@ Have a functionaliti:
 
 and, yes it task for todo
 """
+import os
+from contextlib import suppress
 from pathlib import Path
-from typing import Any
 
 from aiogram import Dispatcher, types
 
 try:
     from app.utils.db_api.models import Chat
 except ImportError:
-    Chat = object()
+    Chat = None
 
 try:
     from app.utils.misc.embed import Embed
@@ -55,10 +56,19 @@ class Debugger:
 
     configured = property(lambda self: self._configured)
 
-    def sort_files(self, files):
-        pass
+    @staticmethod
+    def last_file(fp: Path):
+        """
+        Get last log from /logs/ folder
+        :return:
+        """
+        logs_list = os.listdir(fp)
+        full_list = [os.path.join(fp, i) for i in logs_list]
+        time_sorted_list = sorted(full_list, key=os.path.getmtime)
+        with suppress(IndexError):
+            return fp / time_sorted_list[-1]
 
-    async def read_log(self, fp, filter_):
+    async def read_log(self, fp: Path, filter_):
         """
         Reads Whole log,
         and filters not need things
@@ -81,10 +91,11 @@ class Debugger:
         NOT TESTED
         """
         filters = filters if filters else "INFO"
+        logs_path = Path(__name__).parent.parent / "logs"
 
         if last is False:
             # Magic
-            proj_path = self.logs_path or Path(__name__).parent.parent / "logs"
+            logs_path = self.logs_path or logs_path
 
             # saving filter result
             # and it s incredible,
@@ -93,12 +104,15 @@ class Debugger:
             # of logs or more
             # but, who cares?
             result = []
-            for file in proj_path.glob("*"):
+            for file in logs_path.glob("*"):
                 # blocking io, so be careful about it
                 # and i m lazy about correcting it.
                 log = await self.read_log(file, filters)
                 result.append(log)
             return result
+
+        log = await self.read_log(Path(self.last_file(logs_path)), filters)
+        return log
 
     async def get_logs(self, message: types.Message, *_):
         # get_args it s just a args after /command
@@ -121,11 +135,28 @@ class Debugger:
         await message.answer(__("Нету Логов..."))
 
     if Chat:
-        async def notify_errors(self, message: types.Message, chat: Any):
-            sql = ""
-            await Chat._make_request()
+        @staticmethod
+        async def notify_errors(message: types.Message, chat):
+            if not chat.is_admin_chat:
+                await message.answer(__("Это не админский Чат"))
+                return
+
+            try:
+                # any stuff in as message args
+                # became True
+                notify = bool(message.get_args().split()[0])
+            except IndexError:
+                # if user, or admin wont to write args of commands
+                # so, IndexError will raise, and except catch error
+                # and notify will False
+                notify = False
+
+            sql = "UPDATE chats SET notify_errors = $1 WHERE chat_id = $2;"
+            await Chat._make_request(sql, (not notify, message.chat.id,))
+            await message.answer(__("Успех, этот канал будет уведомлятся об ошибках, если они появятся."))
     else:
-        async def notify_errors(self, message: types.Message):
+        @staticmethod
+        async def notify_errors(message: types.Message):
             return await message.answer("No Chat model Found.")
 
     def _reg(self, *args, **kwargs):
