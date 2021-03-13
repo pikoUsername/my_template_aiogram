@@ -13,14 +13,25 @@ class Acl(BaseMiddleware):
 
     @staticmethod
     async def setup_chat(u: types.User, c: types.Chat, data: dict):
+        """
+        Setups to data user, and chat model
+        and you can get in handler models
+
+        :param u: Telegram user
+        :param c: telegram chat
+        :param data:
+        :return: None
+        """
         chat_id = c.id if c else u.id
         user = await UserModel.get(u.id)
         if not user:
-            user = await UserModel.create(u)
+            await UserModel.create(u)
+            user = UserModel.get(u.id)
 
         chat = await Chat.get(chat_id)
         if not chat:
-            chat = await Chat.create(c)
+            await Chat.create(c)
+            chat = await Chat.get(chat_id)
 
         data['chat'] = chat
         data['user'] = user
