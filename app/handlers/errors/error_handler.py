@@ -3,8 +3,8 @@ import logging
 from app.loader import dp
 from app.utils.db_api.models import Chat
 
-
 log = logging.getLogger(__name__)
+
 
 @dp.errors_handler()
 async def errors_handler(update, exception):
@@ -69,4 +69,3 @@ async def errors_handler(update, exception):
             await admin.notify_error(chats, exception)
 
     log.exception(f'Update: {update} \n{exception}')
-
