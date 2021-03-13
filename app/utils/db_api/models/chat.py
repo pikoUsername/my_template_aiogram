@@ -24,5 +24,5 @@ class Chat(PostgresConnection):
     @staticmethod
     async def get_admin_chats():
         sql = "SELECT c.* FROM chats AS c WHERE is_admin_chat = true AND notify_errors = true;"
-        result = await Chat._make_request(sql, fetch=True)
+        result = await Chat._make_request(sql, mult=True)
         return result

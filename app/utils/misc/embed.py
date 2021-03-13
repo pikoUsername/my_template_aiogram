@@ -49,7 +49,6 @@ class Embed:
     def title(self) -> str:
         return strong(self._title)
 
-    @property
     def clean_embed(self) -> str:
         result = [self.title, self.value]
 
@@ -58,6 +57,8 @@ class Embed:
             result.append(res)
 
         return "\n".join(result)
+
+    __str__ = __repr__ = clean_embed
 
     # methods
 
@@ -157,8 +158,14 @@ class Field:
         self.embed = embed
 
     def get_embed(self) -> str:
+        # here was a bug
         _title = strong(self.title)
-        return f"{_title}\n{self.text}"
+        self.text = self.text.replace("<", "-").replace(">", "-")
+        text = (
+            f"{_title}\n"
+            f"{self.text}",
+        )
+        return "".join(text)
 
     @classmethod
     def from_dict(cls, **kwargs: Any) -> T:

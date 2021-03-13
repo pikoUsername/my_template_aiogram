@@ -34,11 +34,14 @@ class PostgresConnection(RawConnection):
         async with PostgresConnection.pool.acquire() as conn:
             conn: asyncpg.Connection
             async with conn.transaction():
-                if fetch:
+                if mult:
+                    result = await conn.fetch(sql, *params)
+                elif fetch:
                     result = await conn.fetchrow(sql, *params)
-                    return result
                 else:
                     await conn.execute(sql, *params)
+                    return
+                return result
 
     @staticmethod
     def _convert_to_model(data: Optional[dict], model: Type[T]) -> Optional[T]:
@@ -70,7 +73,6 @@ class PostgresConnection(RawConnection):
     def close(self):
         loop = asyncio.get_event_loop()
         loop.run_until_complete(self.pool.close())
-        del loop
 
     def __del__(self):
         logger.info("Closing Postgres Connection...")

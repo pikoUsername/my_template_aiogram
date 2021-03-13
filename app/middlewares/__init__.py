@@ -2,9 +2,8 @@ from aiogram import Dispatcher
 from aiogram.contrib.middlewares.logging import LoggingMiddleware
 from loguru import logger
 
-from .throttling import ThrottlingMiddleware
 from .acl import Acl
-from .throttling import ThrottlingMiddleware
+# from .throttling import ThrottlingMiddleware
 
 
 def setup(dp: Dispatcher):
@@ -12,7 +11,7 @@ def setup(dp: Dispatcher):
 
     logger.info("Setuping Middlewares...")
 
-    dp.middleware.setup(ThrottlingMiddleware(.4))
+    # dp.middleware.setup(ThrottlingMiddleware(.4))
     dp.middleware.setup(LoggingMiddleware())
     dp.middleware.setup(Acl())
     dp.middleware.setup(i18n)

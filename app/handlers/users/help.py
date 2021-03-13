@@ -17,4 +17,4 @@ async def bot_help(message: types.Message):
         cmd, desc = t.split("-")
         e.add_field(cmd, desc)
 
-    await message.answer(e.clean_embed)
+    await message.answer(e.clean_embed())
