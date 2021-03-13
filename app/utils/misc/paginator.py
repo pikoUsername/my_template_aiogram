@@ -11,7 +11,8 @@ from aiogram import Dispatcher
 __all__ = "Paginator",
 
 
-class InvalidPage(Exception): pass
+class InvalidPage(Exception):
+    pass
 
 
 _DEFAULT_KB = InlineKeyboardMarkup(inline_keyboard=[

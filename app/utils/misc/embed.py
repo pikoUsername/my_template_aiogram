@@ -14,7 +14,8 @@ __all__ = "Embed", "Field"
 T = TypeVar("T")  # slut type
 
 
-class InvalidPage(Exception): pass
+class InvalidPage(Exception):
+    pass
 
 
 _DEFAULT_KB = InlineKeyboardMarkup(inline_keyboard=[
