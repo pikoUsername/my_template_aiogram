@@ -1,5 +1,4 @@
 def setup(dp, logs_path=None):
-    from .debug import Debugger
+    from . import debug
 
-    debug = Debugger(dp, logs_path)
-    debug.setup()
+    debug.setup(dp, logs_path)
