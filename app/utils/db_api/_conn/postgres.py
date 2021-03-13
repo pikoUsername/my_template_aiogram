@@ -8,7 +8,7 @@ from loguru import logger
 
 from .base import RawConnection
 
-__all__ = "PostgresConnection"
+__all__ = "PostgresConnection",
 
 T = TypeVar("T")
 
@@ -25,6 +25,7 @@ class PostgresConnection(RawConnection):
             mult: bool = False,
     ):
         if not PostgresConnection.pool:
+            logger.info("Creating Pool.")
             bot = Bot.get_current()
             PostgresConnection.pool = await asyncpg.create_pool(
                 **bot['config']['database']
