@@ -2,7 +2,7 @@ from aiogram import types
 
 from .._conn.postgres import PostgresConnection
 
-__all__ = "Chat"
+__all__ = "Chat",
 
 
 class Chat(PostgresConnection):
@@ -11,7 +11,7 @@ class Chat(PostgresConnection):
     @staticmethod
     async def get(cid: int):
         c = await Chat._make_request(
-            "SELECT * FROM users WHERE user_id = $1;",
+            "SELECT * FROM users WHERE user_id = $1 LIMIT 1;",
             (cid,), fetch=True)
         return c
 
