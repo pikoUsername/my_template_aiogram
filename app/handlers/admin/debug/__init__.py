@@ -8,7 +8,7 @@ Have a functionaliti:
     notify raised errors
     and may used like monitoring tool
 
-and, yes it task for 
+and, yes it task for todo
 """
 from aiogram import Dispatcher
 

@@ -52,7 +52,7 @@ class PostgresConnection(RawConnection):
             mult: bool = False,
             model_type: Type[T] = None
     ) -> Optional[Union[List[T], T]]:
-        raw = await PostgresConnection.__make_request(sql, params, fetch, mult)
+        raw = await PostgresConnection.__make_request(sql, params, fetch=fetch, mult=mult)
         if raw:
             if mult:
                 if not model_type:
