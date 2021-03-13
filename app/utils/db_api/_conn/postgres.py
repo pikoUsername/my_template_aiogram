@@ -35,7 +35,7 @@ class PostgresConnection(RawConnection):
             conn: asyncpg.Connection
             async with conn.transaction():
                 if fetch:
-                    result = await conn.fetch(sql, *params)
+                    result = await conn.fetchrow(sql, *params)
                     return result
                 else:
                     await conn.execute(sql, *params)
@@ -46,22 +46,24 @@ class PostgresConnection(RawConnection):
 
     @staticmethod
     async def _make_request(
-            sql: str,
-            params: Union[tuple, List[tuple]] = None,
-            fetch: bool = False,
-            mult: bool = False,
-            model_type: Type[T] = None
+        sql: str,
+        params: Union[tuple, List[tuple]] = None,
+        fetch: bool = False,
+        mult: bool = False,
+        model_type: Type[T] = None,
     ) -> Optional[Union[List[T], T]]:
-        raw = await PostgresConnection.__make_request(sql, params, fetch=fetch, mult=mult)
+        raw = await PostgresConnection.__make_request(sql, params or [], fetch=fetch, mult=mult)
         if raw:
             if mult:
-                if not model_type:
+                if model_type is None:
                     return [i for i in raw]
-                return [PostgresConnection._convert_to_model(i, model_type) for i in raw]
+                else:
+                    return [PostgresConnection._convert_to_model(i, model_type) for i in raw]
             else:
-                if not model_type:
+                if model_type is None:
                     return raw
-                return PostgresConnection._convert_to_model(raw, model_type)
+                else:
+                    return PostgresConnection._convert_to_model(raw, model_type)
 
         return [] if mult else None
 
