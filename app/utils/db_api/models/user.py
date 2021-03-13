@@ -19,13 +19,12 @@ class UserModel(PostgresConnection):
 
     @staticmethod
     async def create(user: User):
-        sql = (
+        sql = " ".join((
             "INSERT INTO users(user_id, first_name, conversation)",
-            "VALUES ($1, $2, true);"
-        )
+            "VALUES ($1, $2, true);",
+        ))
         param = user.id, user.first_name
-        result = await UserModel._make_request(
-            "".join(sql), param)
+        result = await UserModel._make_request(sql, param)
         return result
 
     @staticmethod

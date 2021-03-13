@@ -26,7 +26,7 @@ class InterceptHandler(logging.Handler):
 # noinspection PyArgumentList
 def setup(lgp: Path, ignore: List[str] = None):
     logger.add(sys.stderr, format="{time} {level} {message}", filter="my_module", level="INFO")
-    logger.add(lgp / "file_{time}.log")
+    logger.add(lgp / "file_{time}.log", format="{time} {message}", rotation="10 MB")
     logging.basicConfig(handlers=[InterceptHandler()], level=logging.INFO)
     if ignore:
         for i in ignore:

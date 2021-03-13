@@ -3,10 +3,7 @@ Debug tools,
 can be used like a admin tools.
 
 Have a functionaliti:
-    show logs, and delete
-    show how many humans online
-    notify raised errors
-    and may used like monitoring tool
+    notify raised errors, and show them
 
 and, yes it task for todo
 """
