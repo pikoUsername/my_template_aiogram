@@ -12,4 +12,4 @@ class IsAdminFilter(BoundFilter):
     async def check(self, _) -> bool:
         # ctx_data stores a data, from middlewares, and etc
         user = ctx_data.get()['user']
-        return user.is_admin
+        return user.get('is_admin')
