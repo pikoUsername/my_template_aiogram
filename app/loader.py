@@ -43,8 +43,7 @@ def setup():
     # importing stuff
     from app import filters
     from app import middlewares
-    from app.utils.misc import executor
-    from app.utils.misc import logging
+    from app.utils.misc import executor, logging
 
     # it s a magic of python, and Path class
     logging.setup(proj_path / "logs")
