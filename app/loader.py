@@ -71,8 +71,3 @@ def setup():
     logger.info("Configure handlers...")
     # noinspection PyUnresolvedReferences
     from app import handlers
-    from app.handlers import admin
-
-    # admin debugger setup
-    # note debugger still in development
-    admin.setup(dp, proj_path / "logs")
