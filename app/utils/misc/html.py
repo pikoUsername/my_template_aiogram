@@ -47,7 +47,7 @@ def a(text: str, url: str) -> str:
 
 
 def code(s: str, lang: str) -> str:
-    pre = {"class": lang}
+    pre = {"class": f"language-{lang}"}
     return wrap_text_html(s, "code", **pre)
 
 
