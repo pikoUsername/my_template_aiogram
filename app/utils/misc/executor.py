@@ -29,7 +29,7 @@ async def notify_all_owner(_):
 async def setup_commands(_dp: Dispatcher):
     await _dp.bot.set_my_commands([
         types.BotCommand('help', 'Справка | Help'),
-        types.BotCommand('start', 'Начать разговор | Start consersation')
+        types.BotCommand('start', 'Начать разговор | Start conversation')
     ])
 
 

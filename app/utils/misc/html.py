@@ -10,13 +10,14 @@ for example:
 or:
 >>> a("text", href="https://google.com")
   better use it, bc "a" func have url checks.
+result:
 <<< '<a href="google.com">text</a>'
 """
 import re
 
 __all__ = "wrap_text_html", "strong", "a", "code", "i"
 
-_AVAILABLE_TAGS = (
+_AVAILABLE_TAGS = {
     "b",
     "strong",
     "i",
@@ -26,7 +27,7 @@ _AVAILABLE_TAGS = (
     "pre",
     "a",
     "code"
-)
+}  # strong set!!
 
 
 def wrap_text_html(text: str, tag: str, **tags_attrubiutes) -> str:
